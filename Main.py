@@ -229,3 +229,117 @@ def date():      # date function...show current date.
     format = '%I:%M %p'
     date = today.strftime(format)
     speak(date)
+
+   def whatsapp_message():     # communication module...help in sending whatsapp message to person mention in query.
+    speak("Tell me the name of Person!.")
+    name=acceptcommands().lower()
+
+    if(name in contacts):
+        speak("Tell me the message...")
+        message=acceptcommands()
+        phone_no=contacts[name][0]
+        try:
+            pywhatkit.sendwhatmsg_instantly(phone_no, message)
+            speak("message sent")
+        except:
+            speak("error in sending message..please try again")
+    
+    else:
+        speak("Tell me the phone number")
+        phone_no=(acceptcommands())
+        phone_no="+91"+phone_no
+        speak("Tell me the message...")
+        message=acceptcommands()
+        try:
+            pywhatkit.sendwhatmsg_instantly(phone_no, message)
+            speak("message sent")
+        except:
+            speak("error in sending message")
+
+def send_mail():          # communication module...help in sending mail to person mention in query.
+    server=smtplib.SMTP("smtp.gmail.com",587)
+    server.ehlo()
+    server.starttls()
+    jarvis_mail_id="user_mail_id@gmail.com"
+    jarvis_id_password="id_password"
+    server.login(jarvis_mail_id,jarvis_id_password)
+
+    speak("Tell me the name of Person!.")
+    name=acceptcommands().lower()
+
+    if(name in contacts):
+        speak("Tell me the subject...")
+        subject=acceptcommands()
+        speak("Tell me the message...")
+        message=acceptcommands()
+        email_receiver=contacts[name][1]
+        try:
+            server.sendmail(jarvis_mail_id,[email_receiver],message)
+            speak("Mail sent to"+name)
+        except:
+            speak("Error in sending mail..try again")
+        server.close()
+            
+    else:
+        speak("Tell me the message...")
+        message=acceptcommands()
+        speak("Tell me the recievers gmail id")
+        email_receiver=acceptcommands()+"@gmail.com"
+        try:
+            server.sendmail(jarvis_mail_id,[email_receiver],message)
+            speak("Mail sent")
+        except:
+            speak("Error in sending mail..try again")
+    server.close()
+
+def speedtest():     #to get the user internet speed.
+    speak("Checking internet speed")
+    speed=speedtest.Speedtest()
+    upload=speed.upload()
+    download=speed.download()
+    upload=int(int(upload)/8000)
+    download=int(int(download)/8000)
+    speak(f"Sir,your downloading speed is{download} and uploading speed is{upload}")
+
+def screen_shot():   # for clicking sceenshots
+    ss=pyautogui.screenshot()
+    ss.save("D:\\ss.png")
+    speak("Screenshot is taken sir")
+
+def wikipedia_search(query):    # web search module..help in scrapping or browse anything on wikipedia.
+    speak("searching wikipedia")
+    query=query.replace("wikipedia","")
+    try:
+        result= wikipedia.summary(query,sentences=2)
+        speak(result)
+    except:
+        speak("There is some error..please speak again sir.")
+
+def google_search(query):         # web search module..help in search anything on google.
+    speak("searching wikipedia")
+    query=query.replace("wikipedia","")
+    try:
+        result= wikipedia.summary(query,sentences=2)
+        speak(result)
+    except:
+        speak("There is some error..please speak again sir.")
+    query=query.replace("jarvis","")
+    query=query.replace("google search","")
+    try:
+        pywhatkit.search(query)
+        speak("Done Sir")
+    except:
+        speak("there is some error..please speak again..")
+
+def open_site(query):            # function help in opening any site.
+    speak("okay sir..launching")
+    query=query.replace("jarvis","")
+    query=query.replace("website","")
+    site=query.replace("open","").lower()
+    site=site.replace(" ","")
+    try:
+        open_site="https://www."+site+".com/"
+        webbrowser.open(open_site)
+        speak("Launched sir")
+    except:
+        speak("There is some error..please speak again sir.")
