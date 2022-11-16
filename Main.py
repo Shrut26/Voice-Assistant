@@ -70,7 +70,8 @@ def accept_wake_commands(wake):
         return "NONE"
     return query
 
-    def face_lock():    # security module ...unlock the system by recognizes the correct user face id only.
+access=False
+def face_lock():    # security module ...unlock the system by recognizes the correct user face id only.
     count=2
     base = cv2.imread("opencv_frame_base.png")   # original user face id...(unlock system by comparing new faces from this base image).
     try:
