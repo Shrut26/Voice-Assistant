@@ -344,3 +344,94 @@ def open_site(query):            # function help in opening any site.
         speak("Launched sir")
     except:
         speak("There is some error..please speak again sir.")
+def chat_bot_module():           # chat bot function...user can chat according to inputs.
+    command1=["hello","wake up","hey","suno na","hi","utho","you there"]
+    reply1=["Hello sir,Welcome Back!","Always for you sir","How can i Help you"]
+    command2=["bye","go and sleep"]
+    reply2=["bye sir","nice meeting you"]
+    speak("okay sir..chat bot activated start chatting")
+    text=acceptcommands().lower()
+    try:
+        def chatterbot(text):
+            for word in text.split():
+                if word in command1:
+                    speak(random.choice(reply1))
+                elif word in command2:
+                    speak(random.choice(reply2))
+                else:
+                    speak("hmm sir.")
+    except:
+        speak("Sir..please chat again")
+
+def Task_execution():         # task execution scenario...accept the voice input as query and execute the task according to tht query.
+    wake =True
+    while(1):
+        if(wake==False):  # did work only when jarvis is awake.
+            wake_up=accept_wake_commands(wake)
+            if(("wake" in wake_up or "wake up" in wake_up)):
+                speak("Yes sir..i am online now")
+                wake =True
+
+        if(wake==True):
+            query =acceptcommands().lower()
+
+            if("wikipedia" in query):
+                wikipedia_search(query)
+
+            elif("open google" in query):
+                webbrowser.open("www.google.com")
+
+            elif ("open youtube" in query):
+                webbrowser.open("www.youtube.com")
+
+            elif ("youtube search" in query):
+                query=query.replace("youtube search","")
+                query=query.replace("jarvis","")
+                c="https://www.youtube.com/results?search_query=" +query
+                webbrowser.open(c)
+
+            elif("temperature" in query):
+                query=query.replace("what is","")
+                temp=wolfram(query)
+                speak(temp)
+
+            elif("date and time" in query):
+                query=query.replace("what is","")
+                date()
+            elif("location" in query):
+                My_location()
+
+            elif("wish me" in query):
+                wish()
+
+            elif("google search" in query):
+                google_search(query)
+            
+            elif("open website" in query or "website" in query or "open facebook" in query or "open instagram" in query):
+                open_site(query)
+            
+            elif("send whatsapp message" in query):
+                whatsapp_message()
+
+            elif("send mail" in query):
+                send_mail()
+            elif("chat bot" in query or "chatting" in query or "chat" in query):
+                chat_bot_module()
+
+            elif("sleep" in query):
+                speak("sleeping mode on.")
+                wake=False
+            
+            elif("internet speed" in query or "speed" in query):
+                speedtest()
+
+            elif("minus" in query or "add" in query or "calculation" in query or "plus" in query or "calculate" in query or "-" in query or "+" in query):
+                calculation(query)
+                
+            else:
+                speak("sorry sir")
+                speak("i have no task assigned to this query")
+                speak("please speak again")
+
+if __name__=="__main__":  # main file will start from this..
+    face_lock()
